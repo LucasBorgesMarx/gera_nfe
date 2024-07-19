@@ -4,7 +4,7 @@ import br.com.itau.geradornotafiscal.adpters.entity.*;
 import br.com.itau.geradornotafiscal.adpters.enuns.*;
 import br.com.itau.geradornotafiscal.adpters.imbound.mapper.PedidoToPedidoEntity;
 import br.com.itau.geradornotafiscal.application.core.service.CalculadoraAliquotaProduto;
-import br.com.itau.geradornotafiscal.application.core.service.GeradorNotaFiscalPortImpl;
+import br.com.itau.geradornotafiscal.application.core.service.GeradorNotaFiscalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GeradorNotaFiscalEntityPortImplTest {
 
     @InjectMocks
-    private GeradorNotaFiscalPortImpl geradorNotaFiscalService;
+    private GeradorNotaFiscalService geradorNotaFiscalService;
     @InjectMocks
     private PedidoToPedidoEntity pedidoToPedidoEntity;
 

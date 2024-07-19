@@ -1,4 +1,4 @@
-package br.com.itau.geradornotafiscal.adpters.imbound.mapper;
+package br.com.itau.geradornotafiscal.adpters.outBound.mapper;
 
 import br.com.itau.geradornotafiscal.adpters.entity.*;
 import br.com.itau.geradornotafiscal.adpters.enuns.*;
@@ -23,7 +23,7 @@ public class NotaFiscalToNotaFiscalEntity {
                 build();
 
     }
-    private DestinatarioEntity destinatarioEntityMapper(Destinatario destinatario) {
+    DestinatarioEntity destinatarioEntityMapper(Destinatario destinatario) {
             if (destinatario.getRegimeTributacao() == null) {
                 return DestinatarioEntity
                         .builder()

@@ -1,45 +1,39 @@
 package br.com.itau.geradornotafiscal.adpters.imbound.request;
 
-import br.com.itau.geradornotafiscal.adpters.entity.NotaFiscalEntity;
 import br.com.itau.geradornotafiscal.adpters.entity.PedidoEntity;
 
-import br.com.itau.geradornotafiscal.adpters.imbound.mapper.NotaFiscalToNotaFiscalEntity;
 import br.com.itau.geradornotafiscal.adpters.imbound.mapper.PedidoToPedidoEntity;
-import br.com.itau.geradornotafiscal.application.ports.out.GeradorNotaFiscalPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import br.com.itau.geradornotafiscal.adpters.outBound.response.GeradorNFResponse;
+import br.com.itau.geradornotafiscal.application.ports.in.GeradorDeNotaFiscalRequestPort;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/pedido")
 public class GeradorNFRest {
 
 
-    private final GeradorNotaFiscalPort notaFiscalService;
-    private final NotaFiscalToNotaFiscalEntity notaFiscalToNotaFiscalEntity;
+    private final GeradorDeNotaFiscalRequestPort notaFiscalService;
     private final PedidoToPedidoEntity pedidoToPedidoEntity;
+    private final GeradorNFResponse geradorNFResponse;
 
-
-    public GeradorNFRest(GeradorNotaFiscalPort notaFiscalService, NotaFiscalToNotaFiscalEntity notaFiscalToNotaFiscalEntity, PedidoToPedidoEntity pedidoToPedidoEntity) {
+    public GeradorNFRest(GeradorDeNotaFiscalRequestPort notaFiscalService, PedidoToPedidoEntity pedidoToPedidoEntity, GeradorNFResponse geradorNFResponse) {
         this.notaFiscalService = notaFiscalService;
-        this.notaFiscalToNotaFiscalEntity = notaFiscalToNotaFiscalEntity;
         this.pedidoToPedidoEntity = pedidoToPedidoEntity;
+        this.geradorNFResponse = geradorNFResponse;
     }
 
     @PostMapping("/gerarNotaFiscal")
-    public ResponseEntity<NotaFiscalEntity> gerarNotaFiscal(@RequestBody PedidoEntity pedidoEntity) {
+    public void gerarNotaFiscal(@RequestBody PedidoEntity pedidoEntity) {
         // Lógica de processamento do pedidoEntity
         var pedido = pedidoToPedidoEntity.mapper(pedidoEntity);
         // Aqui você pode realizar as operações desejadas com o objeto PedidoEntity
-        var notaFiscal = notaFiscalToNotaFiscalEntity.mapper(notaFiscalService.gerarNotaFiscal(pedido));
-        // Exemplo de retorno
+       var nota = notaFiscalService.gerarNotaFiscal(pedido);
 
-        notaFiscal.setMensagem("Nota fiscal gerada com sucesso para o pedidoEntity: " + pedidoEntity.getIdPedido());
-
-        return new ResponseEntity<>(notaFiscal, HttpStatus.OK);
+       geradorNFResponse.gerarNotaFiscal(nota); // Aqui você pode realizar as operações desejadas com o objeto NotaFiscal
     }
 
 }
